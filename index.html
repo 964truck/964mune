@@ -76,7 +76,6 @@ body {
   border: 3px solid var(--main-green);
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
-/* تأثير الانتقال بسلاسة */
 .fade {
   animation: fadeEffect 1.5s;
 }
@@ -217,7 +216,7 @@ body {
   text-align: center;
   border-top: 3px solid #000;
   z-index: 100;
-  box-shadow: -4px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.2);
 }
 .delivery-box {
   max-width: 450px;
@@ -265,16 +264,16 @@ body {
   <div class="working-hours">⏰ أوقات العمل: من 6:00 مساءً إلى 2:00 صباحاً</div>
 </div>
 
-<!-- سلايدر الصور المتحركة تحت أوقات العمل مباشرة -->
+<!-- سلايدر الصور المتحركة تحت أوقات العمل مباشرة (مرتبط بصورك المرفوعة) -->
 <div class="slideshow-container">
   <div class="slide fade">
-    <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&auto=format&fit=crop&q=60" alt="وجبة 964">
+    <img src="Burrito.jpg.PNG" alt="وجبة 964">
   </div>
   <div class="slide fade">
-    <img src="https://images.unsplash.com/photo-1551782450-17144efb9c50?w=600&auto=format&fit=crop&q=60" alt="وجبة 964">
+    <img src="Mune.jpg.jpg" alt="وجبة 964">
   </div>
   <div class="slide fade">
-    <img src="https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?w=600&auto=format&fit=crop&q=60" alt="وجبة 964">
+    <img src="Taco.jpg.PNG" alt="وجبة 964">
   </div>
 </div>
 
@@ -855,7 +854,7 @@ function changeQty(item, delta) {
 }
 
 function sendOrder() {
-  let message = "مرحباً 964 Street Bites، أطلب الآتي:%0A----------------------------%0A;
+  let message = "مرحباً 964 Street Bites، أطلب الآتي:%0A----------------------------%0A";
   let itemsTotal = 0;
   
   for (let key in cart) {
@@ -891,7 +890,7 @@ function showSlides() {
   slideIndex++;
   if (slideIndex > slides.length) {slideIndex = 1}    
   slides[slideIndex-1].style.display = "block";  
-  setTimeout(showSlides, 3000); // تنقل الصورة كل 3 ثواني تلقائياً
+  setTimeout(showSlides, 3000); // تتغير الصورة تلقائياً كل 3 ثواني
 }
 </script>
 
