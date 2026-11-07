@@ -218,7 +218,7 @@ body {
   font-weight: 800;
 }
 .item-info p {
-  margin: 0 0 8px 0;
+  margin: 0 0 6px 0;
   color: var(--text-muted);
   font-size: 12px;
   line-height: 1.4;
@@ -228,24 +228,57 @@ body {
   background-color: var(--main-green);
   font-weight: bold;
   font-size: 14px;
-  padding: 5px 12px;
+  padding: 4px 10px;
   border-radius: 6px;
   display: inline-block;
+  margin-top: 5px;
 }
 
-/* قائمة اختيار النكهة (لحم / دجاج) داخل بطاقة التاكو */
-.variant-select {
+/* أزرار اختيار اللحم أو الدجاج جنباً إلى جنب */
+.variant-group {
+  display: flex;
+  gap: 6px;
+  margin: 8px 0;
+}
+.variant-btn {
   background: #fff;
-  color: #111;
+  color: var(--main-green);
   border: 1px solid var(--accent-green);
-  padding: 5px 8px;
+  padding: 5px 12px;
   border-radius: 6px;
   font-weight: bold;
   font-size: 12px;
   cursor: pointer;
-  margin-bottom: 6px;
-  display: block;
-  outline: none;
+  transition: 0.2s;
+}
+.variant-btn.active {
+  background: var(--main-green);
+  color: #fff;
+}
+
+/* خيارات التعديل والإضافات السريعة (تشيك بوكس وخانات) */
+.extras-box {
+  width: 100%;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #ddd;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 11px;
+}
+.extra-option {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.extra-option input {
+  cursor: pointer;
 }
 
 .controls {
@@ -428,10 +461,21 @@ body {
     <div class="item-info">
       <h3>تاكو (3 قطع)</h3>
       <p>3 قطع تاكو طازجة مع خس، جبنة موزريلا، وصوص 964 المميز</p>
-      <select id="bs_taco_type" class="variant-select" onchange="updateBestsellerPrice()">
-        <option value="meat">لحم (6,000 د.ع)</option>
-        <option value="chicken">دجاج (5,500 د.ع)</option>
-      </select>
+      
+      <!-- أزرار اختيار اللحم أو الدجاج جنباً إلى جنب -->
+      <div class="variant-group">
+        <button type="button" class="variant-btn active" id="bs_btn_meat" onclick="setBestsellerType('meat')">🥩 لحم (6,000)</button>
+        <button type="button" class="variant-btn" id="bs_btn_chicken" onclick="setBestsellerType('chicken')">🍗 دجاج (5,500)</button>
+      </div>
+
+      <!-- إضافات وإزالات سريعة -->
+      <div class="extras-box">
+        <label class="extra-option"><input type="checkbox" id="bs_extra_cheese"> جبن زيادة (+500)</label>
+        <label class="extra-option"><input type="checkbox" id="bs_extra_spicy"> صوص سبايسي</label>
+        <label class="extra-option"><input type="checkbox" id="bs_no_onion"> بدون بصل</label>
+        <label class="extra-option"><input type="checkbox" id="bs_no_jalapeno"> بدون هالبينو</label>
+      </div>
+
       <div class="normal-price" id="bs_taco_price">6,000 د.ع</div>
     </div>
     <div class="controls">
@@ -445,6 +489,10 @@ body {
     <div class="item-info">
       <h3>بوريتو فنكر كرسبي</h3>
       <p>كرسبي مع فنكر، جبنة الشيدر الذائبة، خس طازج، مخلل، وصوص 964 الخاص</p>
+      <div class="extras-box">
+        <label class="extra-option"><input type="checkbox" id="b_extra_cheese"> جبن زيادة (+500)</label>
+        <label class="extra-option"><input type="checkbox" id="b_no_pickles"> بدون مخلل</label>
+      </div>
       <div class="normal-price">5,000 د.ع</div>
     </div>
     <div class="controls">
@@ -457,7 +505,7 @@ body {
   <div class="item-card">
     <div class="item-info">
       <h3>شيبس فرايز (CHIPS FRIES)</h3>
-      <p>اختر شيبسك المفضل (دريتوس، ليز، جيتوس) مع اضافات: هالبينو، ذرة، زيتون، جبن شيدر، خس، مخلل</p>
+      <p>اختر شيبسك المفضل مع اضافات: هالبينو، ذرة، زيتون، جبن شيدر، خس، مخلل</p>
       <div class="normal-price">3,500 د.ع</div>
     </div>
     <div class="controls">
@@ -548,17 +596,28 @@ body {
     </div>
   </div>
 
-  <!-- خانة التاكو المحدثة (بطاقة وحدة مع خيار لحم أو دجاج) -->
+  <!-- خانة التاكو الرئيسية المحدثة (أزرار جانبية لحم ودجاج) -->
   <div id="tacos" class="section-title">🌮 التاكو (TACOS)</div>
   
   <div class="item-card">
     <div class="item-info">
       <h3>تاكو (3 قطع)</h3>
       <p>3 قطع تاكو محشوّة مع خس طازج، جبنة موزريلا، وصوص 964 المميز</p>
-      <select id="taco_type" class="variant-select" onchange="updateMainTacoPrice()">
-        <option value="meat">لحم (6,000 د.ع)</option>
-        <option value="chicken">دجاج (5,500 د.ع)</option>
-      </select>
+      
+      <!-- أزرار اختيار اللحم أو الدجاج جنباً إلى جنب -->
+      <div class="variant-group">
+        <button type="button" class="variant-btn active" id="btn_meat" onclick="setMainTacoType('meat')">🥩 لحم (6,000)</button>
+        <button type="button" class="variant-btn" id="btn_chicken" onclick="setMainTacoType('chicken')">🍗 دجاج (5,500)</button>
+      </div>
+
+      <!-- إضافات وإزالات سريعة -->
+      <div class="extras-box">
+        <label class="extra-option"><input type="checkbox" id="extra_cheese"> جبن زيادة (+500)</label>
+        <label class="extra-option"><input type="checkbox" id="extra_spicy"> صوص سبايسي</label>
+        <label class="extra-option"><input type="checkbox" id="no_onion"> بدون بصل</label>
+        <label class="extra-option"><input type="checkbox" id="no_jalapeno"> بدون هالبينو</label>
+      </div>
+
       <div class="normal-price" id="taco_price">6,000 د.ع</div>
     </div>
     <div class="controls">
@@ -872,7 +931,7 @@ body {
   <!-- خانة الطلب المسبق ووقت الاستلام والملاحظات -->
   <div class="options-container">
     <input type="text" id="pickupTime" class="custom-input" placeholder="⏳ وقت الاستلام المسبق من الشاحنة (مثلاً: أصل خلال 20 دقيقة)">
-    <input type="text" id="orderNotes" class="custom-input" placeholder="✍️ ملاحظات إضافية على الطلب (اختياري: بدون بصل، صوص زيادة...)">
+    <input type="text" id="orderNotes" class="custom-input" placeholder="✍️ ملاحظات إضافية عامة على الطلب (بدون بصل، صوص زيادة...)">
   </div>
 
 </div>
@@ -908,10 +967,26 @@ let cart = {
   s_cheese: 0, s_spicy: 0, s_ketchup: 0, s_toum: 0, s_bbq: 0, cola: 0, water: 0
 };
 
-// تحديد الأسعار حسب النوع المختار
-function getTacoPrice(typeSelectId) {
-  let val = document.getElementById(typeSelectId).value;
-  return val === 'meat' ? 6000 : 5500;
+// متغيرات لتخزين نوع التاكو (لحم أو دجاج)
+let bsTacoType = 'meat';
+let mainTacoType = 'meat';
+
+function setBestsellerType(type) {
+  bsTacoType = type;
+  document.getElementById('bs_btn_meat').classList.toggle('active', type === 'meat');
+  document.getElementById('bs_btn_chicken').classList.toggle('active', type === 'chicken');
+  let p = (type === 'meat') ? 6000 : 5500;
+  document.getElementById('bs_taco_price').innerText = p.toLocaleString() + ' د.ع';
+  updateTotal();
+}
+
+function setMainTacoType(type) {
+  mainTacoType = type;
+  document.getElementById('btn_meat').classList.toggle('active', type === 'meat');
+  document.getElementById('btn_chicken').classList.toggle('active', type === 'chicken');
+  let p = (type === 'meat') ? 6000 : 5500;
+  document.getElementById('taco_price').innerText = p.toLocaleString() + ' د.ع';
+  updateTotal();
 }
 
 const prices = {
@@ -949,21 +1024,9 @@ const prices = {
   water: 250
 };
 
-function updateBestsellerPrice() {
-  let p = getTacoPrice('bs_taco_type');
-  document.getElementById('bs_taco_price').innerText = p.toLocaleString() + ' د.ع';
-  updateTotal();
-}
-
-function updateMainTacoPrice() {
-  let p = getTacoPrice('taco_type');
-  document.getElementById('taco_price').innerText = p.toLocaleString() + ' د.ع';
-  updateTotal();
-}
-
 function getItemPrice(key) {
-  if (key === 'bs_taco') return getTacoPrice('bs_taco_type');
-  if (key === 'taco') return getTacoPrice('taco_type');
+  if (key === 'bs_taco') return bsTacoType === 'meat' ? 6000 : 5500;
+  if (key === 'taco') return mainTacoType === 'meat' ? 6000 : 5500;
   return prices[key] || 0;
 }
 
@@ -982,7 +1045,7 @@ const itemNames = {
   burritoricedchicken: "🌯 بوريتو رز دجاج",
   burritoricedmeat: "🌯 بوريتو رز لحم",
   zinger: "🥪 زنجر",
-  crispybox: "📦 كريسبي بوكس",
+  crispybox: "📦 كرسبي بوكس",
   combo964: "🔥 كومبو 964",
   rizoclassic: "🍛 ريزو كلاسك + كولا",
   rizospicy: "🍛 ريزو سبايسي + كولا",
@@ -1016,7 +1079,11 @@ function updateTotal() {
   for (let key in cart) {
     if (cart[key] > 0) {
       count += cart[key];
-      itemsTotal += cart[key] * getItemPrice(key);
+      let basePrice = getItemPrice(key);
+      let extraPrice = 0;
+      if (key === 'bs_taco' && document.getElementById('bs_extra_cheese').checked) extraPrice += 500;
+      if (key === 'taco' && document.getElementById('extra_cheese').checked) extraPrice += 500;
+      itemsTotal += cart[key] * (basePrice + extraPrice);
     }
   }
   let deliveryCost = parseInt(document.getElementById('deliveryFee').value);
@@ -1061,19 +1128,30 @@ function sendOrder() {
   
   for (let key in cart) {
     if (cart[key] > 0) {
-      let itemPrice = getItemPrice(key);
-      let itemTotal = cart[key] * itemPrice;
-      
-      let details = "";
+      let basePrice = getItemPrice(key);
+      let extraPrice = 0;
+      let optionsText = "";
+
       if (key === 'bs_taco') {
-        let t = document.getElementById('bs_taco_type').value;
-        details = ` (${t === 'meat' ? 'لحم' : 'دجاج'})`;
+        let t = bsTacoType === 'meat' ? 'لحم' : 'دجاج';
+        optionsText += ` (${t}`;
+        if (document.getElementById('bs_extra_cheese').checked) { extraPrice += 500; optionsText += " + جبن زيادة"; }
+        if (document.getElementById('bs_extra_spicy').checked) { optionsText += " + صوص سبايسي"; }
+        if (document.getElementById('bs_no_onion').checked) { optionsText += " - بدون بصل"; }
+        if (document.getElementById('bs_no_jalapeno').checked) { optionsText += " - بدون هالبينو"; }
+        optionsText += ")";
       } else if (key === 'taco') {
-        let t = document.getElementById('taco_type').value;
-        details = ` (${t === 'meat' ? 'لحم' : 'دجاج'})`;
+        let t = mainTacoType === 'meat' ? 'لحم' : 'دجاج';
+        optionsText += ` (${t}`;
+        if (document.getElementById('extra_cheese').checked) { extraPrice += 500; optionsText += " + جبن زيادة"; }
+        if (document.getElementById('extra_spicy').checked) { optionsText += " + صوص سبايسي"; }
+        if (document.getElementById('no_onion').checked) { optionsText += " - بدون بصل"; }
+        if (document.getElementById('no_jalapeno').checked) { optionsText += " - بدون هالبينو"; }
+        optionsText += ")";
       }
 
-      message += `${itemNames[key]}${details}: ${cart[key]} (${itemTotal} د.ع)%0A`;
+      let itemTotal = cart[key] * (basePrice + extraPrice);
+      message += `${itemNames[key]}${optionsText}: ${cart[key]} (${itemTotal} د.ع)%0A`;
       itemsTotal += itemTotal;
     }
   }
@@ -1087,7 +1165,7 @@ function sendOrder() {
 
   let userNotes = document.getElementById('orderNotes').value.trim();
   if (userNotes !== "") {
-    message += `📝 ملاحظات الزبون: ${userNotes}%0A`;
+    message += `📝 ملاحظات الزبون العامة: ${userNotes}%0A`;
   }
 
   let deliverySelect = document.getElementById('deliveryFee');
