@@ -39,7 +39,7 @@ body {
   letter-spacing: 1px;
 }
 .header p {
-  margin: 0 0 10px 0;
+  margin: 0 0 8px 0;
   color: #d0ded5;
   font-size: 13px;
   font-weight: bold;
@@ -53,14 +53,73 @@ body {
   font-size: 12px;
   font-weight: bold;
   border: 1px solid rgba(255, 204, 0, 0.3);
-  margin-top: 5px;
+  margin-top: 3px;
+}
+
+/* شريط حالة الشاحنة والروابط السريعة */
+.info-bar {
+  max-width: 650px;
+  margin: 10px auto;
+  padding: 0 15px;
+  box-sizing: border-box;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.badge-status {
+  background: #1b4d3e;
+  color: #25d366;
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: bold;
+  border: 1px solid #25d366;
+}
+.social-btn, .map-btn {
+  background: #1b4d3e;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: 0.2s;
+}
+.social-btn:hover, .map-btn:hover {
+  background: #25d366;
+  color: #111;
+}
+
+/* زر مشاركة المنيو */
+.share-banner {
+  max-width: 650px;
+  margin: 5px auto 10px auto;
+  padding: 0 15px;
+  box-sizing: border-box;
+  text-align: center;
+}
+.btn-share {
+  background: #0b1f17;
+  color: #fff;
+  border: 1px dashed #25d366;
+  padding: 6px 14px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.2s;
 }
 
 /* تنسيق سلايدر الصور المتحركة تلقائياً */
 .slideshow-container {
   max-width: 650px;
   position: relative;
-  margin: 15px auto;
+  margin: 10px auto;
   padding: 0 15px;
   box-sizing: border-box;
 }
@@ -204,7 +263,33 @@ body {
   color: var(--main-green);
 }
 
-/* قسم التوصيل في الفوتر */
+/* خانة الطلب المسبق والملاحظات */
+.options-container {
+  max-width: 650px;
+  margin: 15px auto 0 auto;
+  padding: 0 15px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.custom-input {
+  width: 100%;
+  background: var(--card-bg);
+  border: 2px dashed var(--accent-green);
+  border-radius: 8px;
+  padding: 10px;
+  color: var(--text-dark);
+  font-size: 13px;
+  font-family: inherit;
+  box-sizing: border-box;
+  outline: none;
+}
+.custom-input:focus {
+  border-color: #25d366;
+}
+
+/* قسم التوصيل والعداد الإلكتروني في الفوتر */
 .footer {
   position: fixed;
   bottom: 0;
@@ -212,11 +297,24 @@ body {
   right: 0;
   background: rgba(17, 45, 34, 0.98);
   backdrop-filter: blur(10px);
-  padding: 12px 15px;
+  padding: 10px 15px;
   text-align: center;
   border-top: 3px solid #000;
   z-index: 100;
   box-shadow: 0 -4px 10px rgba(0,0,0,0.2);
+}
+.live-counter {
+  max-width: 450px;
+  margin: 0 auto 6px auto;
+  background: #0b1f17;
+  color: #ffcc00;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: bold;
+  border: 1px solid #1b4d3e;
+  display: flex;
+  justify-content: space-between;
 }
 .delivery-box {
   max-width: 450px;
@@ -225,7 +323,7 @@ body {
   justify-content: space-between;
   align-items: center;
   background: #0b1f17;
-  padding: 6px 12px;
+  padding: 5px 12px;
   border-radius: 8px;
   border: 1px solid #1b4d3e;
   color: white;
@@ -235,18 +333,18 @@ body {
   background: #fff;
   color: #111;
   border: none;
-  padding: 5px 10px;
+  padding: 4px 8px;
   border-radius: 5px;
   font-weight: bold;
-  font-size: 13px;
+  font-size: 12px;
   cursor: pointer;
 }
 .btn-order {
   background: #25d366;
   color: white;
   border: none;
-  padding: 10px 20px;
-  font-size: 15px;
+  padding: 9px 20px;
+  font-size: 14px;
   font-weight: bold;
   border-radius: 30px;
   cursor: pointer;
@@ -264,7 +362,21 @@ body {
   <div class="working-hours">⏰ أوقات العمل: من 6:00 مساءً إلى 2:00 صباحاً</div>
 </div>
 
-<!-- سلايدر الصور المتحركة تحت أوقات العمل مباشرة (مرتبط بصورك المرفوعة) -->
+<!-- شريط حالة الشاحنة والروابط المباشرة -->
+<div class="info-bar">
+  <div class="badge-status" id="shopStatus">🟢 الشاحنة مفتوحة الآن</div>
+  <a href="https://instagram.com/964truck" target="_blank" class="social-btn">📸 انستغرام</a>
+  <a href="https://tiktok.com/@964truck" target="_blank" class="social-btn">🎬 تيك توك</a>
+  <a href="https://maps.app.goo.gl/BasraMudaraaPark" target="_blank" class="map-btn">📍 موقعنا (حي المدراء)</a>
+  <a href="tel:07722202416" class="social-btn">📞 07722202416</a>
+</div>
+
+<!-- زر مشاركة المنيو -->
+<div class="share-banner">
+  <button class="btn-share" onclick="shareMenu()">🔗 شارك المنيو مع أصدقائك</button>
+</div>
+
+<!-- سلايدر الصور المتحركة تحت أوقات العمل مباشرة -->
 <div class="slideshow-container">
   <div class="slide fade">
     <img src="Burrito.jpg.PNG" alt="وجبة 964">
@@ -745,14 +857,26 @@ body {
     </div>
   </div>
 
+  <!-- خانة الطلب المسبق ووقت الاستلام والملاحظات -->
+  <div class="options-container">
+    <input type="text" id="pickupTime" class="custom-input" placeholder="⏳ وقت الاستلام المسبق من الشاحنة (مثلاً: أصل خلال 20 دقيقة)">
+    <input type="text" id="orderNotes" class="custom-input" placeholder="✍️ ملاحظات إضافية على الطلب (اختياري: بدون بصل، صوص زيادة...)">
+  </div>
+
 </div>
 
-<div style="height: 120px;"></div>
+<div style="height: 150px;"></div>
 
 <div class="footer">
+  <!-- العداد الإلكتروني الفوري -->
+  <div class="live-counter">
+    <span>🛒 عدد القطع: <strong id="totalCount">0</strong></span>
+    <span>💵 المجموع: <strong id="totalPrice">0</strong> د.ع</span>
+  </div>
+
   <div class="delivery-box">
-    <span>📍 منطقة التوصيل:</span>
-    <select id="deliveryFee">
+    <span>📍 التوصيل أو الاستلام:</span>
+    <select id="deliveryFee" onchange="updateTotal()">
       <option value="3000">مركز البصرة (3,000 د.ع)</option>
       <option value="5000">الأقضية والنواحي (5,000 د.ع)</option>
       <option value="0">استلام مباشر من الشاحنة (0)</option>
@@ -851,7 +975,54 @@ const itemNames = {
 function changeQty(item, delta) {
   cart[item] = Math.max(0, cart[item] + delta);
   document.getElementById('qty-' + item).innerText = cart[item];
+  updateTotal();
 }
+
+function updateTotal() {
+  let count = 0;
+  let itemsTotal = 0;
+  for (let key in cart) {
+    if (cart[key] > 0) {
+      count += cart[key];
+      itemsTotal += cart[key] * prices[key];
+    }
+  }
+  let deliveryCost = parseInt(document.getElementById('deliveryFee').value);
+  let grandTotal = itemsTotal + deliveryCost;
+  
+  document.getElementById('totalCount').innerText = count;
+  document.getElementById('totalPrice').innerText = itemsTotal > 0 ? grandTotal.toLocaleString() : '0';
+}
+
+function shareMenu() {
+  if (navigator.share) {
+    navigator.share({
+      title: '964 Street Bites | المنيو الرسمي',
+      text: 'تفضل بزيارة المنيو الخاص بشاحنة 964 Street Bites واطلب ألذ الوجبات 🌮🍔',
+      url: window.location.href,
+    }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(window.location.href);
+    alert("تم نسخ رابط المنيو بنجاح! يمكنك مشاركته مع أصدقائك.");
+  }
+}
+
+// فحص حالة الشاحنة تلقائياً (من 6 مساءً إلى 2 صباحاً)
+function checkShopStatus() {
+  const now = new Date();
+  const hour = now.getHours();
+  // الساعات بين 18:00 (6 مساءً) و 02:00 (2 صباحاً)
+  const isWorking = (hour >= 18 || hour < 2);
+  const statusEl = document.getElementById('shopStatus');
+  if (isWorking) {
+    statusEl.innerHTML = "🟢 الشاحنة مفتوحة الآن";
+    statusEl.style.color = "#25d366";
+  } else {
+    statusEl.innerHTML = "🔴 مغلقة حالياً (تفتح 6 م)";
+    statusEl.style.color = "#ff6b6b";
+  }
+}
+checkShopStatus();
 
 function sendOrder() {
   let message = "مرحباً 964 Street Bites، أطلب الآتي:%0A----------------------------%0A";
@@ -867,12 +1038,22 @@ function sendOrder() {
   
   if(itemsTotal === 0) { alert("الرجاء اختيار وجبة أو عرض واحد على الأقل قبل الإرسال!"); return; }
   
+  let pickup = document.getElementById('pickupTime').value.trim();
+  if (pickup !== "") {
+    message += `----------------------------%0A⏳ وقت الاستلام المسبق: ${pickup}%0A`;
+  }
+
+  let userNotes = document.getElementById('orderNotes').value.trim();
+  if (userNotes !== "") {
+    message += `📝 ملاحظات الزبون: ${userNotes}%0A`;
+  }
+
   let deliverySelect = document.getElementById('deliveryFee');
   let deliveryCost = parseInt(deliverySelect.value);
   let deliveryText = deliverySelect.options[deliverySelect.selectedIndex].text;
   let grandTotal = itemsTotal + deliveryCost;
   
-  message += `----------------------------%0A🛵 التوصيل: ${deliveryText}%0A💰 المجموع الكلي مع التوصيل: ${grandTotal} د.ع`;
+  message += `----------------------------%0A🛵 نوع الطلب/التوصيل: ${deliveryText}%0A💰 المجموع الكلي: ${grandTotal} د.ع`;
   let phone = "9647722202416";
   window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
 }
@@ -890,7 +1071,7 @@ function showSlides() {
   slideIndex++;
   if (slideIndex > slides.length) {slideIndex = 1}    
   slides[slideIndex-1].style.display = "block";  
-  setTimeout(showSlides, 3000); // تتغير الصورة تلقائياً كل 3 ثواني
+  setTimeout(showSlides, 3000);
 }
 </script>
 
