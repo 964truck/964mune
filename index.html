@@ -56,7 +56,7 @@ body {
   margin-top: 3px;
 }
 
-/* شريط حالة الشاحنة والروابط السريعة */
+/* شريط حالة الشاحنة والروابط المباشرة */
 .info-bar {
   max-width: 650px;
   margin: 10px auto;
@@ -204,10 +204,12 @@ body {
   border: 2px dashed var(--accent-green);
   box-shadow: 0 3px 6px rgba(0,0,0,0.05);
   position: relative;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 .item-info {
   flex: 1;
-  padding-left: 10px;
+  min-width: 200px;
 }
 .item-info h3 {
   margin: 0 0 4px 0;
@@ -229,6 +231,21 @@ body {
   padding: 5px 12px;
   border-radius: 6px;
   display: inline-block;
+}
+
+/* قائمة اختيار النكهة (لحم / دجاج) داخل بطاقة التاكو */
+.variant-select {
+  background: #fff;
+  color: #111;
+  border: 1px solid var(--accent-green);
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 12px;
+  cursor: pointer;
+  margin-bottom: 6px;
+  display: block;
+  outline: none;
 }
 
 .controls {
@@ -409,14 +426,18 @@ body {
 
   <div class="item-card">
     <div class="item-info">
-      <h3>تاكو لحم (3 قطع)</h3>
-      <p>3 قطع تاكو محشوّة باللحم مع خس طازج، جبنة موزريلا، وصوص 964 المميز</p>
-      <div class="normal-price">6,000 د.ع</div>
+      <h3>تاكو (3 قطع)</h3>
+      <p>3 قطع تاكو طازجة مع خس، جبنة موزريلا، وصوص 964 المميز</p>
+      <select id="bs_taco_type" class="variant-select" onchange="updateBestsellerPrice()">
+        <option value="meat">لحم (6,000 د.ع)</option>
+        <option value="chicken">دجاج (5,500 د.ع)</option>
+      </select>
+      <div class="normal-price" id="bs_taco_price">6,000 د.ع</div>
     </div>
     <div class="controls">
-      <button class="btn-qty" onclick="changeQty('bs_tacomeat', -1)">-</button>
-      <span class="qty-num" id="qty-bs_tacomeat">0</span>
-      <button class="btn-qty" onclick="changeQty('bs_tacomeat', 1)">+</button>
+      <button class="btn-qty" onclick="changeQty('bs_taco', -1)">-</button>
+      <span class="qty-num" id="qty-bs_taco">0</span>
+      <button class="btn-qty" onclick="changeQty('bs_taco', 1)">+</button>
     </div>
   </div>
 
@@ -527,32 +548,23 @@ body {
     </div>
   </div>
 
-  <!-- خانة التاكو -->
+  <!-- خانة التاكو المحدثة (بطاقة وحدة مع خيار لحم أو دجاج) -->
   <div id="tacos" class="section-title">🌮 التاكو (TACOS)</div>
   
   <div class="item-card">
     <div class="item-info">
-      <h3>تاكو دجاج (3 قطع)</h3>
-      <p>3 قطع تاكو محشوّة بالدجاج مع خس طازج، جبنة موزريلا، وصوص 964 المميز</p>
-      <div class="normal-price">5,500 د.ع</div>
+      <h3>تاكو (3 قطع)</h3>
+      <p>3 قطع تاكو محشوّة مع خس طازج، جبنة موزريلا، وصوص 964 المميز</p>
+      <select id="taco_type" class="variant-select" onchange="updateMainTacoPrice()">
+        <option value="meat">لحم (6,000 د.ع)</option>
+        <option value="chicken">دجاج (5,500 د.ع)</option>
+      </select>
+      <div class="normal-price" id="taco_price">6,000 د.ع</div>
     </div>
     <div class="controls">
-      <button class="btn-qty" onclick="changeQty('tacochicken', -1)">-</button>
-      <span class="qty-num" id="qty-tacochicken">0</span>
-      <button class="btn-qty" onclick="changeQty('tacochicken', 1)">+</button>
-    </div>
-  </div>
-
-  <div class="item-card">
-    <div class="item-info">
-      <h3>تاكو لحم (3 قطع)</h3>
-      <p>3 قطع تاكو محشوّة باللحم مع خس طازج، جبنة موزريلا، وصوص 964 المميز</p>
-      <div class="normal-price">6,000 د.ع</div>
-    </div>
-    <div class="controls">
-      <button class="btn-qty" onclick="changeQty('tacomeat', -1)">-</button>
-      <span class="qty-num" id="qty-tacomeat">0</span>
-      <button class="btn-qty" onclick="changeQty('tacomeat', 1)">+</button>
+      <button class="btn-qty" onclick="changeQty('taco', -1)">-</button>
+      <span class="qty-num" id="qty-taco">0</span>
+      <button class="btn-qty" onclick="changeQty('taco', 1)">+</button>
     </div>
   </div>
 
@@ -887,17 +899,22 @@ body {
 
 <script>
 let cart = {
-  bs_tacomeat: 0, bs_burrito: 0, bs_chipsfries: 0, bs_crispyfries: 0, bs_combo964: 0,
+  bs_taco: 0, bs_burrito: 0, bs_chipsfries: 0, bs_crispyfries: 0, bs_combo964: 0,
   offer1: 0, offer2: 0, offer3: 0, offer4: 0,
-  tacochicken: 0, tacomeat: 0, burrito: 0, burritoricedchicken: 0, burritoricedmeat: 0, zinger: 0, 
+  taco: 0, burrito: 0, burritoricedchicken: 0, burritoricedmeat: 0, zinger: 0, 
   crispybox: 0, combo964: 0, rizoclassic: 0, rizospicy: 0, rizomix: 0, sharing: 0, 
   cupfries: 0, kumpirchicken: 0, kumpirmeat: 0, crispyfries: 0, 
   burgerfries: 0, chipsfries: 0, cheesefries: 0,
   s_cheese: 0, s_spicy: 0, s_ketchup: 0, s_toum: 0, s_bbq: 0, cola: 0, water: 0
 };
 
+// تحديد الأسعار حسب النوع المختار
+function getTacoPrice(typeSelectId) {
+  let val = document.getElementById(typeSelectId).value;
+  return val === 'meat' ? 6000 : 5500;
+}
+
 const prices = {
-  bs_tacomeat: 6000,
   bs_burrito: 5000,
   bs_chipsfries: 3500,
   bs_crispyfries: 4000,
@@ -906,8 +923,6 @@ const prices = {
   offer2: 12000,
   offer3: 8000,
   offer4: 8000,
-  tacochicken: 5500,
-  tacomeat: 6000,
   burrito: 5000,
   burritoricedchicken: 7000,
   burritoricedmeat: 8000,
@@ -934,8 +949,26 @@ const prices = {
   water: 250
 };
 
+function updateBestsellerPrice() {
+  let p = getTacoPrice('bs_taco_type');
+  document.getElementById('bs_taco_price').innerText = p.toLocaleString() + ' د.ع';
+  updateTotal();
+}
+
+function updateMainTacoPrice() {
+  let p = getTacoPrice('taco_type');
+  document.getElementById('taco_price').innerText = p.toLocaleString() + ' د.ع';
+  updateTotal();
+}
+
+function getItemPrice(key) {
+  if (key === 'bs_taco') return getTacoPrice('bs_taco_type');
+  if (key === 'taco') return getTacoPrice('taco_type');
+  return prices[key] || 0;
+}
+
 const itemNames = {
-  bs_tacomeat: "⭐ تاكو لحم (الأكثر مبيعاً)",
+  bs_taco: "⭐ تاكو (الأكثر مبيعاً)",
   bs_burrito: "⭐ بوريتو فنكر كرسبي (الأكثر مبيعاً)",
   bs_chipsfries: "⭐ شيبس فرايز (الأكثر مبيعاً)",
   bs_crispyfries: "⭐ كريسبي فرايز (الأكثر مبيعاً)",
@@ -944,8 +977,7 @@ const itemNames = {
   offer2: "🔥 العرض الثاني (3 تاكو دجاج + 3 تاكو لحم + فنكر + 2 ببسي + 2 صوص)",
   offer3: "🔥 العرض الثالث (بوريتو فنكر كرسبي + شبس فرايز + صوص + ببسي)",
   offer4: "🔥 العرض الرابع (كومبير دجاج + شبس فرايز + قدح فنكر + ببسي)",
-  tacochicken: "🌮 تاكو دجاج",
-  tacomeat: "🌮 تاكو لحم",
+  taco: "🌮 تاكو",
   burrito: "🌯 بوريتو فنكر كرسبي",
   burritoricedchicken: "🌯 بوريتو رز دجاج",
   burritoricedmeat: "🌯 بوريتو رز لحم",
@@ -984,7 +1016,7 @@ function updateTotal() {
   for (let key in cart) {
     if (cart[key] > 0) {
       count += cart[key];
-      itemsTotal += cart[key] * prices[key];
+      itemsTotal += cart[key] * getItemPrice(key);
     }
   }
   let deliveryCost = parseInt(document.getElementById('deliveryFee').value);
@@ -1011,7 +1043,6 @@ function shareMenu() {
 function checkShopStatus() {
   const now = new Date();
   const hour = now.getHours();
-  // الساعات بين 18:00 (6 مساءً) و 02:00 (2 صباحاً)
   const isWorking = (hour >= 18 || hour < 2);
   const statusEl = document.getElementById('shopStatus');
   if (isWorking) {
@@ -1030,8 +1061,19 @@ function sendOrder() {
   
   for (let key in cart) {
     if (cart[key] > 0) {
-      let itemTotal = cart[key] * prices[key];
-      message += `${itemNames[key]}: ${cart[key]} (${itemTotal} د.ع)%0A`;
+      let itemPrice = getItemPrice(key);
+      let itemTotal = cart[key] * itemPrice;
+      
+      let details = "";
+      if (key === 'bs_taco') {
+        let t = document.getElementById('bs_taco_type').value;
+        details = ` (${t === 'meat' ? 'لحم' : 'دجاج'})`;
+      } else if (key === 'taco') {
+        let t = document.getElementById('taco_type').value;
+        details = ` (${t === 'meat' ? 'لحم' : 'دجاج'})`;
+      }
+
+      message += `${itemNames[key]}${details}: ${cart[key]} (${itemTotal} د.ع)%0A`;
       itemsTotal += itemTotal;
     }
   }
